@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy){
             }
         });
         if(!user) throw new UnauthorizedException('Token not valid');
-        if(!user) throw new UnauthorizedException('User is inactive, talking with an admin');
+        if(!user.isActive) throw new UnauthorizedException('User is inactive, talking with an admin');
         return user;
     }
 }
