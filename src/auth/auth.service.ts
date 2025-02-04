@@ -20,13 +20,16 @@ export class AuthService {
     async register(createUserDto:CreateUserDto){
         this.logger.log('register');
         try {
-            await this.prismaService.user.create({
+            const user = await this.prismaService.user.create({
                 data: {
                     ...createUserDto,
                     password: hashPassword(createUserDto.password)
                 }
             });
             this.logger.log('User created');
+            return {
+                token: this.getJwtToken({id: user.id, role: user.role as UserRole})
+            }
         }catch(err){
             this.logger.error('register error');
             if(err.code === "P2002") {
@@ -50,7 +53,9 @@ export class AuthService {
             if(!user) throw new NotFoundException('That email does not exist');
             if(!comparePassword(password, user.password)) throw new UnauthorizedException('Password incorrect');
             delete user.password;
-            return this.getJwtToken({id: user.id, role: user.role as UserRole});
+            return { 
+                token: this.getJwtToken({id: user.id, role: user.role as UserRole})
+            }
         }catch(err){
             this.logger.error('login error');
             this.logger.error(err);
