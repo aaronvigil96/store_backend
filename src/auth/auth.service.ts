@@ -28,7 +28,7 @@ export class AuthService {
             });
             this.logger.log('User created');
             return {
-                token: this.getJwtToken({id: user.id, role: user.role as UserRole})
+                token: this.getJwtToken({id: user.id})
             }
         }catch(err){
             this.logger.error('register error');
@@ -54,7 +54,7 @@ export class AuthService {
             if(!comparePassword(password, user.password)) throw new UnauthorizedException('Password incorrect');
             delete user.password;
             return { 
-                token: this.getJwtToken({id: user.id, role: user.role as UserRole})
+                token: this.getJwtToken({id: user.id})
             }
         }catch(err){
             this.logger.error('login error');

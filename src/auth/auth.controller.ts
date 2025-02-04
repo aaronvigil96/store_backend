@@ -26,7 +26,9 @@ export class AuthController {
 
     @Get('private')
     @Auth(UserRole.ADMIN)
-    privateRoute(){
-
+    privateRoute(@GetUser('role')userRole:string){
+        return {
+            userRole
+        }
     }
 }
