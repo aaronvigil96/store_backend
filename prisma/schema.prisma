@@ -25,13 +25,15 @@ model Category {
   name String @unique
   createdAt DateTime @default(now())
   products Product[]
+  isActive Boolean @default(true)
 }
 
 model Product {
   id Int @id @default(autoincrement())
-  name String
-  quantity Float
+  name String @unique
+  price Float
   stock Int
   categoryId Int
   category Category @relation(fields: [categoryId], references: [id])
+  isActive Boolean @default(true)
 }
