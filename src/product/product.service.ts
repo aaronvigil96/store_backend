@@ -15,6 +15,14 @@ export class ProductService {
         return await this.prismaService.product.findMany({
             where: {
                 isActive: true
+            },
+            include: {
+                category: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
             }
         });
     }
