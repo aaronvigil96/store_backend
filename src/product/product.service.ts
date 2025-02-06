@@ -39,6 +39,18 @@ export class ProductService {
         return product;
     }
 
+    async search(query:string){
+        return await this.prismaService.product.findMany({
+            where: {
+                name: {
+                    contains: query,
+                    mode: "insensitive"
+                },
+                isActive: true
+            }
+        })
+    }
+
     async create(createProductDto:CreateProductDto){
         this.logger.log('create')
         try{

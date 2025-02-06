@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
@@ -10,15 +10,21 @@ export class ProductController {
 
     constructor(private readonly productService:ProductService){}
 
-    @Get()
-    getAllProducts(){
-        return this.productService.getAll();
+    @Get('search')
+    searchProduct(@Query('query')query:string){
+        return this.productService.search(query);
     }
 
     @Get('/:id')
     getProductById(@Param('id', ParseIntPipe)id:number){
         return this.productService.getById(id);
     }
+
+    @Get('/')
+    getAllProducts(){
+        return this.productService.getAll();
+    }
+
 
     @Post()
     @Auth(UserRole.ADMIN)
